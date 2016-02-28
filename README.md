@@ -1,4 +1,4 @@
 # pro-gen
-A python script that generates random profile info.
+A Python Program that generates random profile info.
 
 ---
