@@ -1,13 +1,11 @@
 import logging
 import random
 
-
-logger = logging.getLogger(__file__)
-logging.basicConfig(level=logging.DEBUG)
-
+from resources import helper
+logger = log_helper.CustomLogger(__file__)
 
 def generate_random_name():
-    logger.debug("Attempting to generate random name..")
+    logger.info("Attempting to generate random name..")
 
 
 def main():

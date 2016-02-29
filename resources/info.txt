@@ -1,0 +1,4 @@
+Files in the resources folder are needed only on the server and not need on GH,
+hence, they weren't pushed here.
+
+Cheers!
