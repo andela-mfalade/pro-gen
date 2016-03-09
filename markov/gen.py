@@ -28,5 +28,5 @@ class Generator:
 				break
 			word = self._get_next_word(tail)
 			sentence.append(word)
-		
+
 		return word_separator.join(sentence[depth-1:][:1-depth])

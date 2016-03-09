@@ -1,9 +1,9 @@
 
 class Db:
 	DEPTH_PARAM_NAME = 'depth'
-	
+
 	def __init__(self, conn, sql):
-		self.conn   = conn 
+		self.conn   = conn
 		self.cursor = conn.cursor()
 		self.sql    = sql
 		self.depth  = None
@@ -34,9 +34,9 @@ class Db:
 				self.depth = int(r[0])
 			else:
 				raise ValueError('No depth value found in database, db does not seem to have been created by this utility')
-			
+
 		return self.depth
-		
+
 	def add_word(self, word_list):
 		count = self._get_word_list_count(word_list)
 		if count:
