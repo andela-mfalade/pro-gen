@@ -1,5 +1,4 @@
 import copy
-import logging
 import random
 
 import pandas as pd
@@ -16,14 +15,15 @@ class BioServer(object):
         self.ferns = []
         self.names = []
         self.orchids = []
+        self.districts = []
         self.extract_file_contents()
 
     def fetch_new_bio(self):
         return {
             'name': self.create_new_name(),
             'job_title': self.create_job_title(),
+            'district': self.create_new_district()
         }
-
     def create_new_name(self):
         ferns = copy.copy(self.ferns)
         orchids = copy.copy(self.orchids)
@@ -32,6 +32,10 @@ class BioServer(object):
         mid_name = random.choice(random.choice([ferns, orchids]))
         new_names = ([mid_name], random_names)
         return self.format_names(new_names)
+
+    def create_new_district(self):
+        random_dist = random.choice(self.districts)
+        return self.remove_trailing_spaces(random_dist)
 
     def format_names(self, new_names):
         mid_name, others = new_names
@@ -67,9 +71,6 @@ class BioServer(object):
         ferns = source_file_df['Ferns']
         orchids = source_file_df['Orchids']
         names = source_file_df['African-names']
-        fields = [jobs, names, ferns, orchids]
-        self.jobs, self.names, self.ferns, self.orchids = self.extract_list(fields)
-
-
-if __name__ == '__main__':
-    main()
+        districts = source_file_df['Districts']
+        fields = [jobs, names, ferns, orchids, districts]
+        self.jobs, self.names, self.ferns, self.orchids, self.districts = self.extract_list(fields)
