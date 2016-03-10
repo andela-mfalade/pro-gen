@@ -1,6 +1,6 @@
-"""Combine contents of two text files.
+"""Handle functions related to file manipulation here.
 
-This module shuffles lines of text found within two text files
+This module contians helper methods which handle file contents manipulation.
 """
 
 from itertools import izip_longest
