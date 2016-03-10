@@ -63,3 +63,5 @@ target/
 
 resources/*.txt
 resources/*.csv
+results/*.csv
+results/*.txt

@@ -4,8 +4,9 @@ import random
 import pandas as pd
 
 from config import pathto
-from utils import log_helper
-logger = log_helper.CustomLogger(__file__)
+from config import valueof
+from utils import log_utils
+logger = log_utils.CustomLogger(__file__)
 
 
 class BioServer(object):
@@ -21,11 +22,12 @@ class BioServer(object):
 
     def fetch_new_bio(self):
         return {
-            'name': self.create_new_name(),
+            'name': self.fetch_new_name(),
             'job_title': self.create_job_title(),
-            'district': self.create_new_district()
+            'district': self.fetch_new_district()
         }
-    def create_new_name(self):
+
+    def fetch_new_name(self):
         ferns = copy.copy(self.ferns)
         orchids = copy.copy(self.orchids)
         num_names = random.choice([2, 2, 1])
@@ -33,13 +35,11 @@ class BioServer(object):
         mid_name = random.choice(random.choice([ferns, orchids]))
         new_names = self.format_names(([mid_name], random_names))
         name_length = len(new_names.split(' '))
-        if name_length > 4:
-            logger.info("Number of Names Should not be more than 4")
-            logger.debug("Name: %s", new_names)
-            return self.create_new_name()
+        if name_length > valueof['MAX_NAME_COUNT']:
+            return self.fetch_new_name()
         return new_names
 
-    def create_new_district(self):
+    def fetch_new_district(self):
         random_dist = random.choice(self.districts)
         return self.remove_trailing_spaces(random_dist)
 
