@@ -2,68 +2,58 @@
 
 Main script to initiate biogenesis.
 """
-import argparse
-import codecs
-import sqlite3
 import time
 
-from markov.db import Db
-from markov.gen import Generator
-from markov.parse import Parser
-from markov.rnd import Rnd
-from markov.sql import Sql
+import markovify
+
+from config import pathto
+from config import valueof
 from scripts import bio_server
+from utils import file_utils
 
 
 server = bio_server.BioServer()
 
-SENTENCE_SEPARATOR = '.'
-WORD_SEPARATOR = ' '
 
 
 def fetch_names(num_names):
     for i in range(num_names):
         bio = server.fetch_new_bio()
         print bio
-        time.sleep(0.3)
+        time.sleep(0.1)
 
-def fetch_random_paragraphs(db_name, num_paragraphs):
-    for i in range(num_paragraphs):
-        db = Db(sqlite3.connect(db_name + '.db'), Sql())
-        generator = Generator(db_name, db, Rnd())
-        p_l = [generator.generate(WORD_SEPARATOR) for i in range(num_paragraphs)]
-        print '\n'.join(p_l)
-        time.sleep(0.3)
+    def word_join(self, words):
+        sentence = " ".join(word.split("::")[0] for word in words)
+        return sentence
+
+
+def create_sentences_from_text_file(file_path):
+    with open(file_path) as f:
+        file_content = f.read()
+    model = markovify.Text(file_content, state_size=3)
+
+    for i in range(5):
+        print ' '.join([model.make_short_sentence(140) for i in range(5)])
         print '\n'
 
-def create_chain(db_name, file_path, num_rows):
-    db = Db(sqlite3.connect(db_name + '.db'), Sql())
-    db.setup(lucky_num)
 
-    txt = codecs.open(file_path, 'r', 'utf-8').read()
-    Parser(db_name, db, SENTENCE_SEPARATOR, WORD_SEPARATOR).parse(txt)
+def comine_files():
+    file1 = pathto['THE_PLANET']
+    file2 = pathto['PLANET_FRONDS']
+    file3 = pathto['FRONDS_PLANET']
+    file_utils.shuffle(file1, file2, file3)
+
+
+def replace_contents():
+    file1 = pathto['THE_PLANET']
+    file2 = pathto['THE_PLANET_FILE_PROCESSED']
+    file_utils.insert_values(file1, file2)
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    usage = 'usage >> python %s <mode>\nMode can be either "parse" or "gen"'
-    parser.add_argument('--mode', help=usage)
-    args = parser.parse_args()
-    mode = args.mode
-
-    db_name = 'markov_test'
-    lucky_num = 5
-    file_path = 'resources/GrowingCity.txt'
-
-    # fetch_names(lucky_num)
-
-    if mode == 'parse':
-        create_chain(db_name, file_path, lucky_num)
-    elif mode == 'gen':
-        paragraphs = fetch_random_paragraphs(db_name, lucky_num)
-    else:
-        raise ValueError(usage)
-
+    fetch_names(valueof['LUCKY_NUM'])
+    # create_sentences_from_text_file(pathto['THE_PLANET_FILE'])
+    # comine_files()
 
 if __name__ == '__main__':
     main()

@@ -3,6 +3,7 @@ import random
 
 import pandas as pd
 
+from config import pathto
 from utils import log_helper
 logger = log_helper.CustomLogger(__file__)
 
@@ -30,8 +31,13 @@ class BioServer(object):
         num_names = random.choice([2, 2, 1])
         random_names = random.sample(self.names, num_names)
         mid_name = random.choice(random.choice([ferns, orchids]))
-        new_names = ([mid_name], random_names)
-        return self.format_names(new_names)
+        new_names = self.format_names(([mid_name], random_names))
+        name_length = len(new_names.split(' '))
+        if name_length > 4:
+            logger.info("Number of Names Should not be more than 4")
+            logger.debug("Name: %s", new_names)
+            return self.create_new_name()
+        return new_names
 
     def create_new_district(self):
         random_dist = random.choice(self.districts)
@@ -65,8 +71,7 @@ class BioServer(object):
         return (series.dropna().tolist() for series in series_list)
 
     def extract_file_contents(self):
-        file_path = 'resources/African-Names.csv'
-        source_file_df = pd.read_csv(file_path)
+        source_file_df = pd.read_csv(pathto['AFRICAN_NAMES'])
         jobs = source_file_df['Jobs']
         ferns = source_file_df['Ferns']
         orchids = source_file_df['Orchids']
