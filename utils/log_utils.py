@@ -12,8 +12,7 @@ class CustomLogger():
     Class to add custom behavior to the Logging Module.
     """
 
-    format = '[%(levelname)s] %(asctime)s [ %(pathname)s:%(lineno)d ] ' + \
-        '  - %(message)s'
+    format = '[%(levelname)s] %(asctime)s >>  %(message)s'
 
     def __init__(self, option=None):
         """Init method.
