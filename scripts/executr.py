@@ -58,14 +58,14 @@ def replace_file_contents():
 
 
 def fetch_profile(num_profiles=1):
-    city_file = pathto['CITY_NEIGHBORHOOD_PROCESSED']
+    city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
     def compile_profile(index):
         return {
             'id': index + 1,
             'name': server.fetch_new_name(),
             'occupation': server.fetch_job_title(),
             'neighborhood': server.fetch_new_district(),
-            'city_desc': create_paragraph(city_file),
-            'neighborhood_desc': create_paragraph(city_file),
+            'city_description': create_paragraph(city_file),
+            'neighborhood_description': create_paragraph(city_file),
         }
     return [compile_profile(i) for i in range(num_profiles)]
