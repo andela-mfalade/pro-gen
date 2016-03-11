@@ -11,7 +11,7 @@ logger = log_utils.CustomLogger(__file__)
 
 class BioServer(object):
     def __init__(self):
-        logger.info("Creating New Generator Instance.")
+        logger.info("Creating New Server Instance.")
         self.profile = {}
         self.jobs = []
         self.ferns = []
@@ -23,11 +23,20 @@ class BioServer(object):
     def fetch_new_bio(self):
         return {
             'name': self.fetch_new_name(),
-            'job_title': self.create_job_title(),
+            'job_title': self.fetch_job_title(),
             'district': self.fetch_new_district()
         }
 
     def fetch_new_name(self):
+        return self.create_new_names()
+
+    def fetch_new_district(self):
+        return self.create_new_district()
+
+    def fetch_job_title(self):
+        return self.create_new_job_title()
+
+    def create_new_names(self):
         ferns = copy.copy(self.ferns)
         orchids = copy.copy(self.orchids)
         num_names = random.choice([2, 2, 1])
@@ -36,12 +45,20 @@ class BioServer(object):
         new_names = self.format_names(([mid_name], random_names))
         name_length = len(new_names.split(' '))
         if name_length > valueof['MAX_NAME_COUNT']:
-            return self.fetch_new_name()
+            return self.create_new_names()
         return new_names
 
-    def fetch_new_district(self):
+    def create_new_district(self):
         random_dist = random.choice(self.districts)
         return self.remove_trailing_spaces(random_dist)
+
+    def create_new_job_title(self):
+        job_prefixes = ['', 'Junior', 'Senior', '']
+        job_prefix = random.choice(job_prefixes)
+        job_title = random.choice(self.jobs)
+        if job_prefix:
+            return job_prefix + ' ' + job_title
+        return job_title
 
     def format_names(self, new_names):
         mid_name, others = new_names
@@ -58,14 +75,6 @@ class BioServer(object):
         elif string.endswith(empty_space):
             return string[:-1]
         return string
-
-    def create_job_title(self):
-        job_prefixes = ['', 'Junior', 'Senior', '']
-        job_prefix = random.choice(job_prefixes)
-        job_title = random.choice(self.jobs)
-        if job_prefix:
-            return job_prefix + ' ' + job_title
-        return job_title
 
     def extract_list(self, series_list):
         return (series.dropna().tolist() for series in series_list)
