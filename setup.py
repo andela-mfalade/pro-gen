@@ -13,7 +13,7 @@ setup(
     author='Falade Mayowa',
     author_email='falademayowa240@gmail.com',
     install_requires=['markovify'],
-    url='https://github.com/amandapickering/markovgenerator',
+    url='https://github.com/andela-mfalade/pro-gen',
     keywords='Profile Random names address generator job job-title city description',
     packages=find_packages(),
 )

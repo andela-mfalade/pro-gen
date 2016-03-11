@@ -11,25 +11,16 @@ server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
 
 
-def fetch_names(num_names):
-    for i in range(num_names):
-        bio = server.fetch_new_bio()
-        print bio
-        time.sleep(0.1)
-
-    def word_join(self, words):
-        sentence = " ".join(word.split("::")[0] for word in words)
-        return sentence
+def word_join(self, words):
+    sentence = " ".join(word.split("::")[0] for word in words)
+    return sentence
 
 
-def create_sentences_from_text_file(file_path):
+def create_paragraph(file_path):
     with open(file_path) as f:
         file_content = f.read()
     model = markovify.Text(file_content, state_size=3)
-
-    for i in range(5):
-        print ' '.join([model.make_short_sentence(140) for i in range(5)])
-        print '\n'
+    return ' '.join([model.make_short_sentence(140) for i in range(5)])
 
 
 def combine_files():
@@ -64,3 +55,17 @@ def replace_file_contents():
     file_utils.insert_values(c_neighborhood_in, c_neighborhood_out, server)
 
     logger.info("File Contents Replacement Complete.")
+
+
+def fetch_profile(num_profiles=1):
+    city_file = pathto['CITY_NEIGHBORHOOD_PROCESSED']
+    def compile_profile(index):
+        return {
+            'id': index + 1,
+            'name': server.fetch_new_name(),
+            'occupation': server.fetch_job_title(),
+            'neighborhood': server.fetch_new_district(),
+            'city_desc': create_paragraph(city_file),
+            'neighborhood_desc': create_paragraph(city_file),
+        }
+    return [compile_profile(i) for i in range(num_profiles)]
