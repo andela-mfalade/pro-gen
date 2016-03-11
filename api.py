@@ -55,7 +55,7 @@ def fetch_profiles():
         error_message = {
             'success': False,
             'status_code': 413,
-            'message': 'Request Limit Exceeded. 20 or less profiles count allowed per request.',
+            'message': 'Request Limit Exceeded. 20 or less counts allowed per request.',
             'links': {
                 'self': str(request.url)
             },
