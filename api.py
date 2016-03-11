@@ -8,8 +8,6 @@ from flask import make_response
 from flask import request
 
 from scripts import executr
-from config import pathto
-from config import valueof
 
 
 app = Flask(__name__)
@@ -56,8 +54,8 @@ def fetch_profiles():
     if profile_count > 20:
         error_message = {
             'success': False,
-            'status_code': 88,
-            'message': 'Request Limit Exceeded. 20 or less profiles count allowed per query..',
+            'status_code': 413,
+            'message': 'Request Limit Exceeded. 20 or less profiles count allowed per request.',
             'links': {
                 'self': str(request.url)
             },
