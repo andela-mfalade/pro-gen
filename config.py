@@ -2,8 +2,12 @@
 
 This exists to make file paths easily configurable within the program.
 """
+import os
 
-ROOT_DIR = '/home/progen/pro-gen/'
+if os.environ['PROCESS_ENV'] == 'development':
+    ROOT_DIR = ''
+elif os.environ['PROCESS_ENV'] == 'production':
+    ROOT_DIR = '/home/progen/pro-gen/'
 
 
 valueof = {
