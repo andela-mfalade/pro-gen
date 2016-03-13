@@ -8,6 +8,7 @@ ROOT_DIR = '/home/progen/pro-gen/'
 
 valueof = {
     'LUCKY_NUM': 10,
+    'NUM_SENTENCES': 5,
     'A_SAMPLE': 'AAAA',
     'X_SAMPLE': 'XXXX',
     'MAX_NAME_COUNT': 4,

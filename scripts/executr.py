@@ -1,8 +1,7 @@
-import time
-
 import markovify
 
 from config import pathto
+from config import valueof
 from scripts import bio_server
 from utils import file_utils
 from utils import log_utils
@@ -11,16 +10,17 @@ server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
 
 
-def word_join(self, words):
-    sentence = " ".join(word.split("::")[0] for word in words)
-    return sentence
+def init_files():
+    replace_file_contents()
+    combine_files()
 
 
 def create_paragraph(file_path):
     with open(file_path) as f:
         file_content = f.read()
     model = markovify.Text(file_content, state_size=3)
-    return ' '.join([model.make_short_sentence(140) for i in range(5)])
+    _x = valueof['NUM_SENTENCES']
+    return ' '.join([model.make_short_sentence(140) for i in range(_x)])
 
 
 def combine_files():
@@ -59,6 +59,7 @@ def replace_file_contents():
 
 def fetch_profile(num_profiles=1):
     city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
+
     def compile_profile(index):
         return {
             'id': index + 1,
