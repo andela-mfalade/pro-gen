@@ -10,7 +10,7 @@ server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
 
 
-def init_files():
+def bootstrap_files():
     replace_file_contents()
     combine_files()
 

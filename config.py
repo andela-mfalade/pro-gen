@@ -22,19 +22,19 @@ valueof = {
 
 
 pathto = {
-    'THE_PLANET': ROOT_DIR + 'resources/ThePlanet.txt',
-    'GROWING_CITY': ROOT_DIR + 'resources/GrowingCity.txt',
-    'PLANET_FRONDS': ROOT_DIR + 'resources/PlanetFronds.txt',
+    'THE_PLANET': ROOT_DIR + 'resources/ThePlanet_v02.txt',
     'AFRICAN_NAMES': ROOT_DIR + 'resources/African-Names.csv',
-    'CITY_NEIGHBORHOOD': ROOT_DIR + 'resources/TheCityNeighborhood.txt',
+    'GROWING_CITY': ROOT_DIR + 'resources/GrowingCity_v02.txt',
+    'PLANET_FRONDS': ROOT_DIR + 'resources/PlanetFronds_v02.txt',
+    'CITY_NEIGHBORHOOD': ROOT_DIR + 'resources/TheCityNeighborhood_v02.txt',
 
 
-    'THE_PLANET_PROCESSED': ROOT_DIR + 'results/ThePlanetProcessed.txt',
-    'GROWING_CITY_PROCESSED': ROOT_DIR + 'results/GrowingCityProcessed.txt',
-    'PLANET_FRONDS_PROCESSED': ROOT_DIR + 'results/PlanetFrondsProcessed.txt',
-    'CITY_NEIGHBORHOOD_PROCESSED': ROOT_DIR + 'results/TheCityNeighborhoodProcessed.txt',
+    'THE_PLANET_PROCESSED': ROOT_DIR + 'results/ThePlanetProcessed_v02.txt',
+    'GROWING_CITY_PROCESSED': ROOT_DIR + 'results/GrowingCityProcessed_v02.txt',
+    'PLANET_FRONDS_PROCESSED': ROOT_DIR + 'results/PlanetFrondsProcessed_v02.txt',
+    'CITY_NEIGHBORHOOD_PROCESSED': ROOT_DIR + 'results/TheCityNeighborhoodProcessed_v02.txt',
 
 
-    'THE_PLANET_FRONDS': ROOT_DIR + 'results/ThePlanet-Plus-PlanetFronds.txt',
-    'GROWING_CITY_NEIGHBORHOOD': ROOT_DIR + 'results/GrowintCity-Plus-CityNeighborhood.txt',
+    'THE_PLANET_FRONDS': ROOT_DIR + 'results/ThePlanet-Plus-PlanetFronds_v02.txt',
+    'GROWING_CITY_NEIGHBORHOOD': ROOT_DIR + 'results/GrowintCity-Plus-CityNeighborhood_v02.txt',
 }
