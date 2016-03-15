@@ -47,7 +47,13 @@ def server_error(error):
 
 @app.route('/', methods=['GET'])
 def welcome_home():
-    return jsonify({'Text': 'Welcome to the Progen API.'})
+    return jsonify({
+        'Text': 'Welcome to the Progen API.',
+        'valid_request_samples': {
+            'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
+            'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile>'
+        }
+    })
 
 
 @app.route('/api/v1/profiles', methods=['GET'])
@@ -87,4 +93,3 @@ def fetch_single_profile():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

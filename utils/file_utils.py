@@ -12,7 +12,7 @@ from config import valueof
 def shuffle(file1, file2, out_file):
     with open(out_file, 'w') as res, open(file1) as f1, open(file2) as f2:
         for line1, line2 in izip_longest(f1, f2, fillvalue=""):
-            res.write("{} \n {}\n".format(line1.rstrip(), line2.rstrip()))
+            res.write("{}\n{}\n".format(line1.rstrip(), line2.rstrip()))
 
 
 def insert_values(in_file, out_file, server):
