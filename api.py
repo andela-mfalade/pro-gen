@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask
 from flask import jsonify
 from flask import make_response
@@ -92,4 +94,4 @@ def fetch_single_profile():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(threaded=True, debug=True)
