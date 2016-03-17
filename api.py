@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from flask import Flask
@@ -9,6 +10,7 @@ from scripts import executr
 
 
 app = Flask(__name__)
+all_requests = []
 
 
 @app.errorhandler(404)
@@ -49,6 +51,9 @@ def server_error(error):
 
 @app.route('/', methods=['GET'])
 def welcome_home():
+    global all_requests
+    executr.update_firebase(all_requests)
+    all_requests = []
     return jsonify({
         'Text': 'Welcome to the Progen API.',
         'valid_request_samples': {
@@ -60,6 +65,11 @@ def welcome_home():
 
 @app.route('/api/v1/profiles', methods=['GET'])
 def fetch_profiles():
+        global all_requests
+        all_requests.append({
+            'req_url': str(request.url),
+            'time': datetime.datetime.now()
+        })
         response = {
             'success': True,
             'status_code': 200,
@@ -68,7 +78,7 @@ def fetch_profiles():
             },
         }
         profile_count = int(request.args['count'])
-        if profile_count > 20:
+        if profile_count > 50:
             error_message = {
                 'success': False,
                 'status_code': 413,
@@ -85,6 +95,11 @@ def fetch_profiles():
 
 @app.route('/api/v1/profile', methods=['GET'])
 def fetch_single_profile():
+    global all_requests
+    all_requests.append({
+        'req_url': str(request.url),
+        'time': datetime.datetime.now()
+    })
     response = {
         'success': True,
         'status_code': 200,

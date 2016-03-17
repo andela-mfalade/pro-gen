@@ -1,3 +1,8 @@
+from threading import Thread
+import Queue
+
+from firebase import firebase
+
 import markovify
 
 from config import pathto
@@ -5,9 +10,12 @@ from config import valueof
 from scripts import bio_server
 from utils import file_utils
 from utils import log_utils
+from utils import thread_utils
 
 server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
+firebase = firebase.FirebaseApplication(valueof['DB_PATH'], None)
+new_user = 'Ozgur Vatansever'
 
 
 def bootstrap_files():
@@ -58,6 +66,10 @@ def replace_file_contents():
 
 
 def fetch_profile(num_profiles=1):
+    return fetch_profiles_in_chunks(num_profiles)
+
+
+def get_profile_chunk(chunk_size, queue=None):
     city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
 
     def compile_profile(index):
@@ -69,4 +81,26 @@ def fetch_profile(num_profiles=1):
             'city_description': create_paragraph(city_file),
             'neighborhood_description': create_paragraph(city_file),
         }
-    return [compile_profile(i) for i in range(num_profiles)]
+    queue.put([compile_profile(i) for i in range(chunk_size)])
+
+
+def fetch_profiles_in_chunks(num_profiles):
+    queue = Queue.Queue()
+    threads = []
+    x = thread_utils.chunkate(num_profiles)
+    for i in x:
+        t = Thread(target=get_profile_chunk, args=(i, queue))
+        threads.append(t)
+        t.start()
+        t.join()
+    final_res = []
+    for _ in range(queue.qsize()):
+        final_res += queue.get()
+    return final_res
+
+
+def update_firebase(req_list):
+    firebase.post(
+        'requests',
+        req_list,
+    )

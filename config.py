@@ -18,6 +18,7 @@ valueof = {
     'MAX_NAME_COUNT': 4,
     'WORD_SEPARATOR': ' ',
     'SENTENCE_SEPARATOR': '.',
+    'DB_PATH': 'https://progen.firebaseio.com/'
 }
 
 
