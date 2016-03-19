@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from flask import Flask
 from flask import jsonify
@@ -30,7 +29,6 @@ def server_error(error):
     return make_response(jsonify(error_message))
 
 
-
 @app.errorhandler(400)
 def server_error(error):
     error_message = {
@@ -46,7 +44,6 @@ def server_error(error):
         },
     }
     return make_response(jsonify(error_message))
-
 
 
 @app.route('/', methods=['GET'])
