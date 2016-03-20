@@ -1,3 +1,7 @@
+"""Executr module.
+
+All commands are run from here.
+"""
 from threading import Thread
 import Queue
 
@@ -15,7 +19,6 @@ from utils import thread_utils
 server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
 firebase = firebase.FirebaseApplication(valueof['DB_PATH'], None)
-new_user = 'Ozgur Vatansever'
 
 
 def bootstrap_files():
