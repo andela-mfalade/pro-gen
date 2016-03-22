@@ -35,34 +35,34 @@ class CustomLogger():
     def info(self, *args):
         """Info method.
 
-        Binds the logging info method to CustomLogger
+        Binds the logging 'info' method to CustomLogger
         """
         return self.logger.info(*args)
 
     def debug(self, *args):
         """Debug method.
 
-        Binds the logging debug method to CustomLogger
+        Binds the logging 'debug' method to CustomLogger
         """
         return self.logger.debug(*args)
 
     def warn(self, *args):
         """Info method.
 
-        Binds the logging info method to CustomLogger
+        Binds the logging 'warn' method to CustomLogger
         """
         return self.logger.warn(*args)
 
     def error(self, *args):
         """Error method.
 
-        Binds the logging error method to CustomLogger
+        Binds the logging 'error' method to CustomLogger
         """
         return self.logger.error(*args, exc_info=True)
 
     def critical(self, *args):
         """Critical method.
 
-        Binds the logging critical method to CustomLogger
+        Binds the logging 'critical' method to CustomLogger
         """
         return self.logger.critical(*args)
