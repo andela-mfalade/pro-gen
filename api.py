@@ -22,9 +22,7 @@ def server_error(error):
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
             'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
         },
-        'links': {
-            'self': str(request.url)
-         },
+        'links': {'self': str(request.url)},
     }
     return make_response(jsonify(error_message))
 
@@ -39,9 +37,7 @@ def server_error(error):
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
             'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
         },
-        'links': {
-            'self': str(request.url)
-        },
+        'links': {'self': str(request.url)},
     }
     return make_response(jsonify(error_message))
 
@@ -52,7 +48,7 @@ def welcome_home():
     executr.update_firebase(all_requests)
     all_requests = []
     return jsonify({
-        'text': 'Welcome to the Progen API.',
+        'g_text': 'Welcome to the Progen API.',
         'hint': 'You can request up to 50 profiles per request.',
         'usage': {
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
@@ -71,9 +67,7 @@ def fetch_profiles():
         response = {
             'success': True,
             'status_code': 200,
-            'links': {
-                'self': str(request.url)
-            },
+            'links': {'self': str(request.url)},
         }
         profile_count = int(request.args['count'])
         if profile_count > 50:
@@ -81,9 +75,7 @@ def fetch_profiles():
                 'success': False,
                 'status_code': 413,
                 'message': 'Request Limit Exceeded. 50 or less counts allowed per request.',
-                'links': {
-                    'self': str(request.url)
-                },
+                'links': {'self': str(request.url)},
             }
             return jsonify(error_message)
         else:
