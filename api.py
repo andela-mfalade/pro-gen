@@ -18,13 +18,11 @@ def server_error(error):
         'success': False,
         'status_code': 404,
         'message': 'Nothing Exists On This Endpoint',
-        'valid_request_samples': {
+        'usage': {
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
             'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
         },
-        'links': {
-            'self': str(request.url)
-         },
+        'links': {'self': str(request.url)},
     }
     return make_response(jsonify(error_message))
 
@@ -35,13 +33,11 @@ def server_error(error):
         'success': False,
         'status_code': 400,
         'message': 'You are doing this wrong. You need to specify the count.',
-        'valid_request_samples': {
+        'usage': {
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
             'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
         },
-        'links': {
-            'self': str(request.url)
-        },
+        'links': {'self': str(request.url)},
     }
     return make_response(jsonify(error_message))
 
@@ -52,8 +48,9 @@ def welcome_home():
     executr.update_firebase(all_requests)
     all_requests = []
     return jsonify({
-        'Text': 'Welcome to the Progen API.',
-        'valid_request_samples': {
+        'g_text': 'Welcome to the Progen API.',
+        'hint': 'You can request up to 50 profiles per request.',
+        'usage': {
             'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
             'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile>'
         }
@@ -70,19 +67,15 @@ def fetch_profiles():
         response = {
             'success': True,
             'status_code': 200,
-            'links': {
-                'self': str(request.url)
-            },
+            'links': {'self': str(request.url)},
         }
         profile_count = int(request.args['count'])
         if profile_count > 50:
             error_message = {
                 'success': False,
                 'status_code': 413,
-                'message': 'Request Limit Exceeded. 20 or less counts allowed per request.',
-                'links': {
-                    'self': str(request.url)
-                },
+                'message': 'Request Limit Exceeded. 50 or less counts allowed per request.',
+                'links': {'self': str(request.url)},
             }
             return jsonify(error_message)
         else:
