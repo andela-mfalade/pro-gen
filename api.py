@@ -6,10 +6,12 @@ from flask import make_response
 from flask import request
 
 from scripts import executr
+from utils import Response
 
 
-app = Flask(__name__)
 all_requests = []
+app = Flask(__name__)
+response = Response()
 
 
 @app.errorhandler(404)
@@ -43,18 +45,12 @@ def server_error(error):
 
 
 @app.route('/', methods=['GET'])
-def welcome_home():
+def get_home():
     global all_requests
     executr.update_firebase(all_requests)
     all_requests = []
-    return jsonify({
-        'g_text': 'Welcome to the Progen API.',
-        'hint': 'You can request up to 50 profiles per request.',
-        'usage': {
-            'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
-            'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile>'
-        }
-    })
+    res = response(status_code=200, descr='home')
+    return jsonify(res)
 
 
 @app.route('/api/v1/profiles', methods=['GET'])
