@@ -15,33 +15,17 @@ response = Response()
 
 
 @app.errorhandler(404)
-def server_error(error):
-    error_message = {
-        'success': False,
-        'status_code': 404,
-        'message': 'Nothing Exists On This Endpoint',
-        'usage': {
-            'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
-            'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
-        },
-        'links': {'self': str(request.url)},
-    }
-    return make_response(jsonify(error_message))
+def page_not_found(error):
+    req_url = str(request.url)
+    res = response(status_code=404, req_url=req_url)
+    return make_response(jsonify(res))
 
 
 @app.errorhandler(400)
 def server_error(error):
-    error_message = {
-        'success': False,
-        'status_code': 400,
-        'message': 'You are doing this wrong. You need to specify the count.',
-        'usage': {
-            'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
-            'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile.>'
-        },
-        'links': {'self': str(request.url)},
-    }
-    return make_response(jsonify(error_message))
+    req_url = str(request.url)
+    res = response(status_code=400, req_url=req_url)
+    return make_response(jsonify(res))
 
 
 @app.route('/', methods=['GET'])
@@ -56,42 +40,33 @@ def get_home():
 @app.route('/api/v1/profiles', methods=['GET'])
 def fetch_profiles():
         global all_requests
+        req_url = str(request.url)
         all_requests.append({
-            'req_url': str(request.url),
+            'req_url': req_url,
             'time': datetime.datetime.now()
         })
-        response = {
-            'success': True,
-            'status_code': 200,
-            'links': {'self': str(request.url)},
-        }
         profile_count = int(request.args['count'])
         if profile_count > 50:
-            error_message = {
-                'success': False,
-                'status_code': 413,
-                'message': 'Request Limit Exceeded. 50 or less counts allowed per request.',
-                'links': {'self': str(request.url)},
-            }
-            return jsonify(error_message)
+            res = response(status_code=413, req_url=req_url)
+            return jsonify(res)
         else:
-            response.update({'data':  executr.fetch_profile(profile_count)})
-            return jsonify(response)
+            res = response(status_code=201, req_url=req_url)
+            res.update({'data':  executr.fetch_profile(profile_count)})
+            return jsonify(res)
 
 
 @app.route('/api/v1/profile', methods=['GET'])
 def fetch_single_profile():
     global all_requests
+    req_url = str(request.url)
     all_requests.append({
-        'req_url': str(request.url),
+        'req_url': req_url,
         'time': datetime.datetime.now()
     })
-    response = {
-        'success': True,
-        'status_code': 200,
-        'data': executr.fetch_profile()
-    }
-    return jsonify(response)
+    data = {'data': executr.fetch_profile()}
+    res = response(status_code=201, req_url=req_url)
+    res.update(data)
+    return jsonify(res)
 
 
 if __name__ == '__main__':
