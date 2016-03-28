@@ -11,7 +11,6 @@ elif os.environ['PROCESS_ENV'] == 'production':
 
 
 valueof = {
-    'LUCKY_NUM': 10,
     'NUM_SENTENCES': 5,
     'A_SAMPLE': 'AAAA',
     'X_SAMPLE': 'XXXX',
