@@ -52,7 +52,7 @@ def fetch_profiles():
             return jsonify(res)
         else:
             res = response(status_code=201, req_url=url)
-            res.update({'data':  executr.fetch_profile(profile_count)})
+            res.update({'data': executr.fetch_profile(profile_count)})
             return jsonify(res)
 
 

@@ -2,8 +2,7 @@
 
 All commands are run from here.
 """
-from threading import Thread
-import Queue
+from multiprocessing import Pool
 
 from firebase import firebase
 
@@ -14,7 +13,7 @@ from config import valueof
 from scripts import bio_server
 from utils import file_utils
 from utils import log_utils
-from utils import thread_utils
+from utils import pool_utils
 
 server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
@@ -31,7 +30,7 @@ def create_paragraph(file_path):
         file_content = f.read()
     model = markovify.Text(file_content, state_size=3)
     _x = valueof['NUM_SENTENCES']
-    return ' '.join([model.make_short_sentence(140) for i in range(_x)])
+    return ' '.join([model.make_short_sentence(140) for i in xrange(_x)])
 
 
 def combine_files():
@@ -69,36 +68,34 @@ def replace_file_contents():
 
 
 def fetch_profile(num_profiles=1):
-    return fetch_profiles_in_chunks(num_profiles)
+    return fetch_multiprocessed_chunks(num_profiles)
 
 
-def get_profile_chunk(chunk_size, queue=None):
+def get_profile_chunk(chunk_size):
     city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
 
-    def compile_profile(index):
+    def compile_profile():
         return {
-            'id': index + 1,
             'name': server.fetch_new_name(),
             'occupation': server.fetch_job_title(),
             'neighborhood': server.fetch_new_district(),
             'city_description': create_paragraph(city_file),
             'neighborhood_description': create_paragraph(city_file),
         }
-    queue.put([compile_profile(i) for i in range(chunk_size)])
+    return [compile_profile() for i in xrange(chunk_size)]
 
 
-def fetch_profiles_in_chunks(num_profiles):
-    queue = Queue.Queue()
-    threads = []
-    x = thread_utils.chunkate(num_profiles)
-    for i in x:
-        t = Thread(target=get_profile_chunk, args=(i, queue))
-        threads.append(t)
-        t.start()
-        t.join()
+def fetch_multiprocessed_chunks(num_profiles):
+    pool_size, depth = pool_utils.get_pool_config(num_profiles)
+    pool = Pool(pool_size)
+    x = pool_utils.chunkate(num_profiles, depth)
     final_res = []
-    for _ in range(queue.qsize()):
-        final_res += queue.get()
+    count = 1
+    for each_list in pool.map(get_profile_chunk, x):
+        for record in each_list:
+            record.update({'id': count})
+            final_res.append(record)
+            count += 1
     return final_res
 
 

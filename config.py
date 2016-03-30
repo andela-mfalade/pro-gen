@@ -12,6 +12,7 @@ elif os.environ['PROCESS_ENV'] == 'production':
 
 valueof = {
     'NUM_SENTENCES': 5,
+    'MAX_POOL_SIZE': 5,
     'A_SAMPLE': 'AAAA',
     'X_SAMPLE': 'XXXX',
     'MAX_NAME_COUNT': 4,
