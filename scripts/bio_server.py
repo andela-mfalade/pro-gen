@@ -57,7 +57,7 @@ class BioServer(object):
         job_prefix = random.choice(job_prefixes)
         job_title = random.choice(self.jobs)
         if job_prefix:
-            return job_prefix + ' ' + job_title
+            return ' '.join([job_prefix, job_title])
         return job_title
 
     def format_names(self, new_names):

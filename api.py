@@ -47,7 +47,7 @@ def fetch_profiles():
             'time': datetime.datetime.now()
         })
         profile_count = int(request.args['count'])
-        if profile_count > 50:
+        if profile_count > 100:
             res = response(status_code=413, req_url=url)
             return jsonify(res)
         else:
