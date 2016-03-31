@@ -7,7 +7,7 @@ import os
 if os.environ['PROCESS_ENV'] == 'development':
     ROOT_DIR = ''
 elif os.environ['PROCESS_ENV'] == 'production':
-    ROOT_DIR = '/home/progen/pro-gen/'
+    ROOT_DIR = '/home/senongo/progen/'
 
 
 valueof = {
