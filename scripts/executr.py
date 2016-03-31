@@ -2,9 +2,9 @@
 
 All commands are run from here.
 """
-from multiprocessing import Pool
+from threading import Thread
+import Queue
 
-from firebase import firebase
 import markovify
 
 from config import pathto
@@ -12,16 +12,16 @@ from config import valueof
 from scripts import bio_server
 from utils import file_utils
 from utils import log_utils
-from utils import pool_utils
+from utils import thread_utils
 
 server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
-firebase = firebase.FirebaseApplication(valueof['DB_PATH'], None)
 
 
-def bootstrap_files():
-    replace_file_contents()
-    combine_files()
+def refresh_file_contents():
+    # replace_file_contents()
+    # combine_files()
+    return (200, 'bootstrap-successful')
 
 
 def create_paragraph(file_path):
@@ -29,7 +29,7 @@ def create_paragraph(file_path):
         file_content = f.read()
     model = markovify.Text(file_content, state_size=3)
     _x = valueof['NUM_SENTENCES']
-    return ' '.join([model.make_short_sentence(140) for i in xrange(_x)])
+    return ' '.join([model.make_short_sentence(140) for i in range(_x)])
 
 
 def combine_files():
@@ -67,10 +67,10 @@ def replace_file_contents():
 
 
 def fetch_profile(num_profiles=1):
-    return create_profiles(num_profiles)
+    return fetch_profiles_in_chunks(num_profiles)
 
 
-def get_profile_chunk(chunk_size):
+def get_profile_chunk(chunk_size, queue=None):
     city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
 
     def compile_profile():
@@ -81,25 +81,20 @@ def get_profile_chunk(chunk_size):
             'city_description': create_paragraph(city_file),
             'neighborhood_description': create_paragraph(city_file),
         }
-    return [compile_profile() for i in xrange(chunk_size)]
+    queue.put([compile_profile() for i in range(chunk_size)])
 
 
-def create_profiles(num_profiles):
-    pool_size, depth = pool_utils.get_pool_config(num_profiles)
-    pool = Pool(pool_size)
-    x = pool_utils.chunkate(num_profiles, depth)
-    final_res = []
-    count = 1
-    for each_list in pool.map(get_profile_chunk, x):
-        for record in each_list:
-            record.update({'id': count})
-            final_res.append(record)
-            count += 1
-    return final_res
-
-
-def update_firebase(req_list):
-    firebase.post(
-        'requests',
-        req_list,
-    )
+def fetch_profiles_in_chunks(num_profiles):
+    queue = Queue.Queue()
+    threads = []
+    x = thread_utils.chunkate(num_profiles)
+    for i in x:
+        t = Thread(target=get_profile_chunk, args=(i, queue))
+        threads.append(t)
+        t.start()
+        t.join()
+    res = []
+    for _ in range(queue.qsize()):
+        res += queue.get()
+    [item.update({'id': idx + 1}) for idx, item in enumerate(res)]
+    return res

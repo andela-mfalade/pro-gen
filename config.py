@@ -7,18 +7,16 @@ import os
 if os.environ['PROCESS_ENV'] == 'development':
     ROOT_DIR = ''
 elif os.environ['PROCESS_ENV'] == 'production':
-    ROOT_DIR = '/home/progen/pro-gen/'
+    ROOT_DIR = '/home/senongo/progen/'
 
 
 valueof = {
     'NUM_SENTENCES': 5,
-    'MAX_POOL_SIZE': 5,
     'A_SAMPLE': 'AAAA',
     'X_SAMPLE': 'XXXX',
     'MAX_NAME_COUNT': 4,
     'WORD_SEPARATOR': ' ',
-    'SENTENCE_SEPARATOR': '.',
-    'DB_PATH': 'https://progen.firebaseio.com/'
+    'SENTENCE_SEPARATOR': '.'
 }
 
 
