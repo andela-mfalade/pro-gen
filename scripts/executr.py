@@ -5,8 +5,6 @@ All commands are run from here.
 from threading import Thread
 import Queue
 
-from firebase import firebase
-
 import markovify
 
 from config import pathto
@@ -18,7 +16,6 @@ from utils import thread_utils
 
 server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
-firebase = firebase.FirebaseApplication(valueof['DB_PATH'], None)
 
 
 def bootstrap_files():
@@ -75,16 +72,15 @@ def fetch_profile(num_profiles=1):
 def get_profile_chunk(chunk_size, queue=None):
     city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
 
-    def compile_profile(index):
+    def compile_profile():
         return {
-            'id': index + 1,
             'name': server.fetch_new_name(),
             'occupation': server.fetch_job_title(),
             'neighborhood': server.fetch_new_district(),
             'city_description': create_paragraph(city_file),
             'neighborhood_description': create_paragraph(city_file),
         }
-    queue.put([compile_profile(i) for i in range(chunk_size)])
+    queue.put([compile_profile() for i in range(chunk_size)])
 
 
 def fetch_profiles_in_chunks(num_profiles):
@@ -96,14 +92,9 @@ def fetch_profiles_in_chunks(num_profiles):
         threads.append(t)
         t.start()
         t.join()
-    final_res = []
+    res = []
     for _ in range(queue.qsize()):
-        final_res += queue.get()
-    return final_res
-
-
-def update_firebase(req_list):
-    firebase.post(
-        'requests',
-        req_list,
-    )
+        res += queue.get()
+    for idx, item in enumerate(res):
+        item.update({'id': idx + 1})
+    return res
