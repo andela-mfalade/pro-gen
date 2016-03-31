@@ -56,5 +56,13 @@ def fetch_single_profile():
     return jsonify(res)
 
 
+@app.route('/api/v1/bootstrap', methods=['GET'])
+def refresh_files():
+    url = str(request.url)
+    status_code, flag = executr.refresh_file_contents()
+    res = response(status_code=status_code, req_url=url, flag=flag)
+    return jsonify(res)
+
+
 if __name__ == '__main__':
     app.run(threaded=True, debug=True)

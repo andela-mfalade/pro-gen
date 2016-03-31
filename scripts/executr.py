@@ -18,9 +18,10 @@ server = bio_server.BioServer()
 logger = log_utils.CustomLogger(__file__)
 
 
-def bootstrap_files():
-    replace_file_contents()
-    combine_files()
+def refresh_file_contents():
+    # replace_file_contents()
+    # combine_files()
+    return (200, 'bootstrap-successful')
 
 
 def create_paragraph(file_path):
