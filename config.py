@@ -20,6 +20,11 @@ valueof = {
 }
 
 
+# API Source files config
+RESOURCE_FILE_VERSION = 'v03'
+RESOURCE_FILE_PATH = ROOT_DIR + 'resources/'
+
+
 pathto = {
     'THE_PLANET': ROOT_DIR + 'resources/ThePlanet_v02.txt',
     'AFRICAN_NAMES': ROOT_DIR + 'resources/African-Names.csv',
@@ -36,4 +41,7 @@ pathto = {
 
     'THE_PLANET_FRONDS': ROOT_DIR + 'results/ThePlanet-Plus-PlanetFronds_v02.txt',
     'GROWING_CITY_NEIGHBORHOOD': ROOT_DIR + 'results/GrowintCity-Plus-CityNeighborhood_v02.txt',
+
+    'CITY_FILE': '{}TheCity_{}.txt'.format(RESOURCE_FILE_PATH, RESOURCE_FILE_VERSION),
+    'NEIGHBORHOOD_FILE': '{}TheNeighborhood_{}.txt'.format(RESOURCE_FILE_PATH, RESOURCE_FILE_VERSION),
 }
