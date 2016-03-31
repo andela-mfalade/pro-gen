@@ -71,7 +71,8 @@ def fetch_profile(num_profiles=1):
 
 
 def get_profile_chunk(chunk_size, queue=None):
-    city_file = pathto['GROWING_CITY_NEIGHBORHOOD']
+    city_file = pathto['CITY_FILE']
+    neighborhood_file = pathto['NEIGHBORHOOD_FILE']
 
     def compile_profile():
         return {
@@ -79,7 +80,7 @@ def get_profile_chunk(chunk_size, queue=None):
             'occupation': server.fetch_job_title(),
             'neighborhood': server.fetch_new_district(),
             'city_description': create_paragraph(city_file),
-            'neighborhood_description': create_paragraph(city_file),
+            'neighborhood_description': create_paragraph(neighborhood_file),
         }
     queue.put([compile_profile() for i in range(chunk_size)])
 
