@@ -14,8 +14,8 @@ class Response():
         tip = {'tip': 'You can request up to 50 profiles per request.'}
         usage = {
             'usage': {
-                'sample1': 'http://progen.pythonanywhere.com/api/v1/profile',
-                'sample2': 'http://progen.pythonanywhere.com/api/v1/profiles?count=<number of desired profile>'
+                'sample1': 'http://senongo.pythonanywhere.com/api/v1/profile',
+                'sample2': 'http://senongo.pythonanywhere.com/api/v1/profiles?count=<number of desired profile>'
             }
         }
         default_message = {
