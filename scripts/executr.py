@@ -5,7 +5,6 @@ All commands are run from here.
 from multiprocessing import Pool
 
 from firebase import firebase
-
 import markovify
 
 from config import pathto
@@ -68,7 +67,7 @@ def replace_file_contents():
 
 
 def fetch_profile(num_profiles=1):
-    return fetch_multiprocessed_chunks(num_profiles)
+    return create_profiles(num_profiles)
 
 
 def get_profile_chunk(chunk_size):
@@ -85,7 +84,7 @@ def get_profile_chunk(chunk_size):
     return [compile_profile() for i in xrange(chunk_size)]
 
 
-def fetch_multiprocessed_chunks(num_profiles):
+def create_profiles(num_profiles):
     pool_size, depth = pool_utils.get_pool_config(num_profiles)
     pool = Pool(pool_size)
     x = pool_utils.chunkate(num_profiles, depth)
