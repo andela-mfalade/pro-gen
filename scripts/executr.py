@@ -95,6 +95,5 @@ def fetch_profiles_in_chunks(num_profiles):
     res = []
     for _ in range(queue.qsize()):
         res += queue.get()
-    for idx, item in enumerate(res):
-        item.update({'id': idx + 1})
+    [item.update({'id': idx + 1}) for idx, item in enumerate(res)]
     return res
